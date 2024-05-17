@@ -1,0 +1,9 @@
+{
+    "cmake.sourceDirectory": "C:/Users/hal80/Desktop/works/pbl2024/mahjong-cpp",
+    "files.associations": {
+        "iosfwd": "cpp"
+    },
+    "python.analysis.extraPaths": [
+        "./src"
+    ]
+}
