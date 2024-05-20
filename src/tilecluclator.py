@@ -54,7 +54,7 @@ class TileCluclator:
             print('')
             return True
         else:
-            #print("役無")
+            print("無役")
             return False
         
     def check_victory(self, tiles):
