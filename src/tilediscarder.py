@@ -34,7 +34,7 @@ class TileDiscarder:
         return -1
 
 if __name__ == "__main__":
-    hand = [9,9,1,19,21,29,31,32,33,34,35,1,35,36]
+    hand = [1,9,11,19,21,29,31,32,33,34,5,1,37,36]
     discarder = TileDiscarder(1)
     hand_result = discarder.discard_tile(hand)
     print(hand_result)
