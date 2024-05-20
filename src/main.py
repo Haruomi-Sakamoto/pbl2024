@@ -35,6 +35,3 @@ if __name__ == "__main__":
                 print(discard)
                 #捨て牌
                 myturn = False
-                
-            
-            

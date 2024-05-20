@@ -1,21 +1,21 @@
 from randomdiscarder import RandomDiscarder
 from kokushidiscarder import KokushiDiscarder
+from sevensdiscarder import SevensDiscarder
 
 class TileDiscarder:
     def __init__(self, mode):
         self.mode = mode
         self.random = RandomDiscarder()
         self.kokushi = KokushiDiscarder()
+        self.sevens = SevensDiscarder()
 
     def discard_tile(self,hand):
         if self.mode == 0:
             discard = self.random.discard(hand)
         elif self.mode == 1:
             discard = self.kokushi.discard(hand)
-            pass
         elif self.mode == 2:
-            discard = 29
-            pass
+            discard = self.sevens.discard(hand)
         elif self.mode == 3:
             discard = 11
             pass
