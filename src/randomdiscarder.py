@@ -5,5 +5,5 @@ class RandomDiscarder:
         pass
 
     def discard(self, hand):
-        tile = random.choice(hand)
-        return tile
+        discard = random.choice(hand)
+        return discard
