@@ -46,6 +46,8 @@ class cam_setting:
 class tile_setting:
     def __init__(self):
         self.yaochu = [1,9,11,19,21,29,31,32,33,34,35,36,37]
+        self.wind = [31,32,33,34]
+        self.sangen = [35,36,37]
 
 """
 class hand_setting:

@@ -13,7 +13,10 @@ discarder = TileDiscarder(0)#Mode 0:Random, 1:Kokushi, 2:Sevens, 3:Nomal
 myturn = False
 victory = False
 
+wind = [31,31]
+
 if __name__ == "__main__":
+    discarder.set_wind(wind)
     while not victory: 
         #myturnかチェック
         myturn = True

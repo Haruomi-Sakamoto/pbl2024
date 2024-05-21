@@ -8,6 +8,7 @@ class TileDiscarder:
         self.random = RandomDiscarder()
         self.kokushi = KokushiDiscarder()
         self.sevens = SevensDiscarder()
+        self.wind = []
 
     def discard_tile(self,hand):
         if self.mode == 0:
@@ -32,6 +33,9 @@ class TileDiscarder:
             if matrix[i] == target:
                 return i
         return -1
+    
+    def set_wind(self,wind):
+        self.wind = wind
 
 if __name__ == "__main__":
     hand = [1,9,11,19,21,29,31,32,33,34,5,1,37,36]
