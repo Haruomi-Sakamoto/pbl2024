@@ -1,0 +1,987 @@
+.PROGRAM main()
+    CALL setup
+    CALL const
+    CALL home
+    CALL keyboardctrl
+.END
+
+
+.PROGRAM setup()
+    MC ERESET 1:
+    MC ERESET 2:
+    TWAIT 0.5
+    MC ZPOWER 1: ON
+    MC ZPOWER 2: ON
+    MC SPEED 1:spsetup
+    MC SPEED 2:spsetup
+    PRINT 0:"start up"
+    TWAIT 0.5
+.END
+
+.PROGRAM const()
+    spsetup = 5
+    tool = 1
+    hand = 0
+    reach = 0
+    cy = 0
+    input = -1
+    inputcy = -1
+    inputtaku = -1
+    inputtk = -1
+    inputrp = -1
+    inputdp = 0
+    tenbouoffsetx = 0
+    tenbouoffsety = -3
+    tenbouoffsetz = -118
+    reachoffset = -128
+    repaioffsetx = -14
+    dapaioffsetx = 0
+    sphome1 = 50
+    sphome2 = 50
+    sptool1 = 10
+    sptool2 = 10
+    sptoolz = 40
+    sptoolc = 10
+    tooloffsetz = -15
+    sptenbou1 = 10
+    sptenbou2 = 10
+    sptehai1 = 10
+    sptehai2 = 10
+    sprepai1 = 10
+    sprepai2 = 10
+    spdice1 = 20
+    spdice2 = 30
+    mtnum = 1
+    PRINT 0:"set constants"
+.END
+
+.PROGRAM home()
+    MC EXECUTE 1: r1_setup
+    MC EXECUTE 2: r2_setup
+    TWAIT 1
+    SWAIT 51,52
+    PRINT 0:"home"
+    TWAIT 1
+.END
+
+.PROGRAM keyboardctrl()
+    WHILE input!=100 DO
+        PROMPT"Waiting keyborad input:",input
+        IF input == 1 THEN
+            CALL home
+        ELSEIF input == 2 THEN
+            CALL toolchange
+        ELSEIF input == 3 THEN
+            CALL hand
+        ELSEIF input == 4 THEN
+            CALL reach
+        ELSEIF input == 5 THEN
+            CALL cylinder
+        ELSEIF input == 10 THEN
+            CALL takuhome
+        ELSEIF input == 20 THEN
+            MC SPEED 1:sphome1
+            MC SPEED 2:sphome2
+            CALL home
+        ELSEIF input == 21 THEN
+            MC SPEED 1:sptenbou1
+            MC SPEED 2:sptenbou2
+            CALL tenbou
+        ELSEIF input == 23 THEN
+            MC SPEED 1:sptehai1
+            MC SPEED 2:sptehai2
+            CALL tehai
+        ELSEIF input == 24 THEN
+            MC SPEED 1:spdice1
+            MC SPEED 2:spdice2
+            CALL dice
+        ELSEIF input == 25 THEN
+            MC SPEED 1:sprepai1
+            MC SPEED 2:sprepai2
+            CALL repai
+        ELSEIF input == 30 THEN
+            MC SPEED 1:sptool1
+            MC SPEED 2:sptool2
+            CALL toolchange
+        ELSEIF input == 31 THEN
+            CALL toolchangevir
+        ELSEIF input == 40 THEN
+            CALL tumo
+        ELSEIF input == 41 THEN
+            CALL tumo2
+        ELSEIF input == 42 THEN
+            CALL tumo3
+        ELSEIF input == 43 THEN
+            CALL tumo4
+        ELSEIF input == 50 THEN
+            CALL dapai
+        ELSEIF input == 60 THEN
+            CALL RON
+        END
+    END
+    MC SPEED 1:spsetup
+    MC SPEED 2:spsetup
+.END
+
+
+.PROGRAM toolchange()
+    MC EXECUTE 1: r1_toolchange
+    MC EXECUTE 2: r2_toolchange
+    TWAIT 1
+    SWAIT 53,57
+    TWAIT 1
+    CALL home
+.END
+
+.PROGRAM toolchangevir()
+    TWAIT 1
+    IF tool == 1 THEN
+        tool = 0
+    ELSEIF tool == 0 THEN
+        tool = 1
+    END
+    TWAIT 1
+.END
+
+.PROGRAM hand()
+    MC EXECUTE 1: r1_hand
+    TWAIT 1
+    SWAIT 54
+    TWAIT 1
+.END
+
+.PROGRAM reach()
+    MC EXECUTE 1: r1_reach
+    TWAIT 1
+    SWAIT 55
+    TWAIT 1
+.END
+
+.PROGRAM cylinder()
+    MC EXECUTE 1: r1_cylinder
+    TWAIT 1
+    SWAIT 56
+    TWAIT 1
+.END
+
+.PROGRAM test()
+    MC EXECUTE 1: r1_test
+    TWAIT 1
+    SWAIT 10
+    TWAIT 1
+.END
+
+.PROGRAM takuhome()
+    MC EXECUTE 1: r1_takuhome
+    TWAIT 1
+    SWAIT 11
+    TWAIT 1
+.END
+
+.PROGRAM tenbou()
+    MC EXECUTE 1: r1_tenbou
+    TWAIT 1
+    MC EXECUTE 2: r2_tenbou
+    TWAIT 1
+    SWAIT 20,21
+    TWAIT 1
+    CALL home
+.END
+
+.PROGRAM tehai()
+    IF tool == 0 THEN
+        MC EXECUTE 1: r1_tehai
+        MC EXECUTE 2: r2_tehai
+        TWAIT 1
+        SWAIT 22,23
+        TWAIT 1
+    END
+    CALL home
+.END
+
+.PROGRAM dice()
+    MC EXECUTE 1: r1_dice
+    TWAIT 1
+    MC EXECUTE 2: r2_dice
+    TWAIT 1
+    SWAIT 25,26
+    TWAIT 1
+    CALL home
+.END
+
+.PROGRAM repai()
+    IF tool == 0 THEN
+        MC EXECUTE 1: r1_repai
+        MC EXECUTE 2: r2_repai
+        TWAIT 1
+        SWAIT 28,29
+        TWAIT 1
+        CALL home
+    END
+.END
+
+.PROGRAM tumo()
+    IF tool == 1 THEN
+        MC EXECUTE 1: r1_tumo
+        MC EXECUTE 2: r2_tumo
+        TWAIT 1
+        SWAIT 40,41
+        TWAIT 1
+        CALL home
+    END
+.END
+
+.PROGRAM tumo2()
+    IF tool == 1 THEN
+        MC EXECUTE 1: r1_tumo
+        MC EXECUTE 2: r2_tumo
+        TWAIT 1
+        SWAIT 48,49
+        TWAIT 1
+        CALL home
+    END
+.END
+
+.PROGRAM tumo3()
+    IF tool == 1 THEN
+        MC EXECUTE 1: r1_tumo
+        MC EXECUTE 2: r2_tumo
+        TWAIT 1
+        SWAIT 50,51
+        TWAIT 1
+        CALL home
+    END
+.END
+
+.PROGRAM tumo4()
+    IF tool == 1 THEN
+        MC EXECUTE 1: r1_tumo
+        MC EXECUTE 2: r2_tumo
+        TWAIT 1
+        SWAIT 52,53
+        TWAIT 1
+        CALL home
+    END
+.END
+
+.PROGRAM dapai()
+    IF tool == 1 THEN
+        MC EXECUTE 1: r1_dapai
+        MC EXECUTE 2: r2_dapai
+        TWAIT 1
+        SWAIT 43,44
+        TWAIT 1
+        CALL home
+    END
+.END
+
+.PROGRAM RON()
+    MC EXECUTE 1: r1_dapai
+    MC EXECUTE 2: r2_dapai
+    TWAIT 1
+    SWAIT 46,47
+    TWAIT 1
+    CALL home
+    END
+.END
+
+.PROGRAM r1_setup()
+    SIGNAL -51
+    IF tool == 1 THEN
+        CLOSEI 1
+    ELSEIF tool == 0 THEN
+        OPENI 1
+    END
+    CLOSEI 2
+    CLOSEI 3
+    SPEED 100 ALWAYS
+    ABS.SPEED 1: ON
+    IF tool == 1 THEN
+        JMOVE TP1HOME
+    ELSEIF tool == 0 THEN
+        JMOVE TP1HOMEIN
+    END
+    ABS.SPEED 1: OFF
+    SIGNAL 51
+.END
+
+.PROGRAM r2_setup()
+    CLOSEI 1
+    CLOSEI 2
+    CLOSEI 3
+    CLOSEI 4
+    SPEED 100 ALWAYS
+    SIGNAL-52
+    ABS.SPEED 2: ON
+    JMOVE TP2HOME
+    ABS.SPEED 2: OFF
+    SIGNAL 52
+.END
+
+.PROGRAM r1_toolchange()
+    SPEED 100 ALWAYS
+    SIGNAL -53
+    IF hand == 0 THEN
+        CALL handctrl
+    END
+    ABS.SPEED 1: ON
+    IF tool == 1 THEN
+        JMOVE #r1_toolup
+    ELSEIF tool == 0 THEN
+        JMOVE #r1_tooldown
+    END
+    TWAIT 0.5
+    DRIVE 3,15,sptoolz
+    TWAIT 0.5
+    OPENI 3
+    ABS.SPEED 1: OFF
+    PROMPT"Cylinder check:",inputcy
+        IF inputcy == 1 THEN
+            IF tool == 1 THEN
+                TWAIT 1
+                DRIVE 4,180,sptoolc
+                tool = 0
+                PRINT 0:"toolchange up"
+            ELSEIF tool == 0 THEN
+                TWAIT 1
+                ABS.SPEED 1: ON
+                DRIVE 4,-180,sptoolc            
+                ABS.SPEED 1: OFF
+                tool = 1
+                PRINT 0:"toolchange down"
+            END
+            DRIVE 3,-15,sptoolz
+        ELSEIF inputcy == 0 THEN
+            ABS.SPEED 1: ON
+            TWAIT 0.5
+            ABS.SPEED 1: OFF
+        END
+    TWAIT 0.5
+    CLOSEI 3
+    SIGNAL 53
+.END
+
+.PROGRAM r2_toolchange()
+    SPEED 100 ALWAYS
+    SIGNAL -57
+    ABS.SPEED 1: ON
+    JMOVE TP2HOME
+    TWAIT 0.5
+    DRIVE 1,20,100
+    TWAIT 0.5
+    SWAIT 53
+    ABS.SPEED 1: OFF
+    TWAIT 0.5
+    SIGNAL 57
+.END
+
+.PROGRAM r1_hand()
+    SPEED 100 ALWAYS
+    SIGNAL -54
+    TWAIT 0.5
+    IF hand == 0 THEN
+        OPENI 1
+        hand = 1
+        PRINT 0:"hand close"
+        TWAIT 0.5
+    ELSEIF hand == 1 THEN
+        CLOSEI 1
+        hand = 0
+        PRINT 0:"hand open"
+        TWAIT 0.5
+    END
+    SIGNAL 54
+.END
+
+.PROGRAM r1_reach()
+    SPEED 100 ALWAYS
+    SIGNAL -55
+    TWAIT 0.5
+    IF reach == 0 THEN
+        OPENI 2
+        reach = 1
+        PRINT 0:"reach true"
+        TWAIT 0.5
+    ELSEIF reach == 1 THEN
+        CLOSEI 2
+        reach = 0
+        PRINT 0:"reach false"
+        TWAIT 0.5
+    END
+    SIGNAL 55
+.END
+
+.PROGRAM r1_cylinder()
+    SPEED 100 ALWAYS
+    SIGNAL -56
+    TWAIT 0.5
+    IF cy == 0 THEN
+        OPENI 3
+        cy = 1
+        PRINT 0:"reach true"
+        TWAIT 0.5
+    ELSEIF cy == 1 THEN
+        CLOSEI 3
+        cy = 0
+        PRINT 0:"reach false"
+        TWAIT 0.5
+    END
+    SIGNAL 56
+.END
+
+.PROGRAM r1_test()
+    SPEED 100 ALWAYS
+    SIGNAL -10
+    TWAIT 1
+    L3LMOVE TP1,1
+    L3LMOVE SHIFT(TP1 BY 0,300,0),1
+    L3LMOVE SHIFT(TP1 BY 0,300,-50),1
+    L3LMOVE SHIFT(TP1 BY 0,300,0),1
+    L3LMOVE SHIFT(TP1 BY -300,200,0),1
+    L3LMOVE SHIFT(TP1 BY -300,200,-50),1
+    L3LMOVE SHIFT(TP1 BY -300,200,0),1
+    L3LMOVE SHIFT(TP1 BY -300,0,0),1
+    L3LMOVE TP1,1
+    SIGNAL 10
+.END
+
+.PROGRAM r1_takuhome()
+    SPEED 100 ALWAYS
+    SIGNAL -11
+    inputtaku = -1
+    TWAIT 1
+    L3LMOVE TPtaku,1
+    WHILE inputtaku!=100 DO
+        PROMPT"taku jog:",inputtaku
+        IF inputtaku == 1 THEN
+            L3LMOVE SHIFT(TPtaku BY 0, 0,-100),1
+        ELSEIF inputtaku == 2 THEN
+            L3LMOVE TPtaku,1
+        END
+    END
+    TWAIT 1
+    SIGNAL 11
+.END
+
+.PROGRAM r1_tenbou()
+    SPEED 100 ALWAYS
+    ABS.SPEED 1: ON
+    SIGNAL -20
+    IF tool == 1 THEN
+        JMOVE TP1HOME
+    ELSEIF tool == 0 THEN
+        JMOVE TP1HOMEIN
+    END
+    TWAIT 0.5
+    DRIVE 1,-40,100
+    TWAIT 0.5
+    SWAIT 22
+    DRIVE 1,40,100
+    ABS.SPEED 1: OFF
+    TWAIT 0.5
+    SIGNAL 20
+.END
+
+.PROGRAM r2_tenbou()
+    SPEED 100 ALWAYS
+    L3SPEED 0 ALWAYS
+    ABS.SPEED 2: ON
+    SIGNAL -21,-22
+    TWAIT 0.5
+    JMOVE TP2HOME
+    TWAIT 0.5
+    L3LMOVE SHIFT(TP2HOME BY tenbouoffsetx, tenbouoffsety,0),1
+    TWAIT 0.5
+    OPENI 1
+    TWAIT 0.5
+    L3LMOVE SHIFT(TP2HOME BY tenbouoffsetx, tenbouoffsety,tenbouoffsetz),1
+    TWAIT 0.5
+    CLOSEI 1
+    TWAIT 1
+    L3LMOVE SHIFT(TP2HOME BY tenbouoffsetx, tenbouoffsety,0),1
+    TWAIT 0.5
+    JMOVE TP2REACH
+    TWAIT 0.5
+    L3LMOVE SHIFT(TP2REACH BY 0, 0,reachoffset),1
+    TWAIT 1
+    OPENI 1
+    TWAIT 0.5
+    CLOSEI 1
+    TWAIT 0.5
+    JMOVE TP2REACH
+    SIGNAL 22
+    JMOVE TP2HOME
+    ABS.SPEED 2: OFF
+    TWAIT 0.5
+    SIGNAL 21
+.END
+
+.PROGRAM r1_tehai()
+    SPEED 100 ALWAYS
+    SIGNAL -22,-24
+    ABS.SPEED 1: ON
+    JMOVE TP1HOMEIN
+    TWAIT 0.5
+    JMOVE TP1tehai
+    ABS.SPEED 1: OFF
+    TWAIT 0.5
+    JMOVE TP1tehaidown
+    WHILE inputtk!=100 DO
+        PROMPT"Waiting keyborad input:",inputtk
+        IF inputtk == 100 THEN
+            SIGNAL 24
+        END
+    END
+    SWAIT 24
+    JMOVE TP1tehai
+    TWAIT 0.5
+    SIGNAL 22
+.END
+
+.PROGRAM r2_tehai()
+    SPEED 100 ALWAYS
+    SIGNAL -23
+    ABS.SPEED 2: ON
+    JMOVE TP2HOME
+    TWAIT 0.5
+    JMOVE TP2tehai
+    ABS.SPEED 2: OFF
+    TWAIT 0.5
+    JMOVE TP2tehaidown
+    SWAIT 24
+    JMOVE TP2tehai
+    TWAIT 0.5
+    SIGNAL 23
+.END
+
+.PROGRAM r1_dice()
+    SPEED 100 ALWAYS
+    SIGNAL -26
+    ABS.SPEED 1: ON
+    IF tool == 1 THEN
+        JMOVE TP1HOME
+    ELSEIF tool == 0 THEN
+        JMOVE TP1HOMEIN
+    END
+    TWAIT 0.5
+    DRIVE 1,-40,100
+    TWAIT 0.5
+    SWAIT 25
+    DRIVE 1,40,100
+    ABS.SPEED 1: OFF
+    TWAIT 0.5
+    SIGNAL 26
+.END
+
+.PROGRAM r2_dice()
+    SPEED 100 ALWAYS
+    SIGNAL -25
+    ABS.SPEED 2: ON
+    JMOVE TP2HOME
+    TWAIT 0.5
+    JMOVE TP2DICE
+    ABS.SPEED 2: OFF
+    TWAIT 0.5
+    JMOVE TP2DICEdown
+    TWAIT 0.5
+    OPENI 2
+    TWAIT 1.5
+    CLOSEI 2
+    JMOVE TP2HOME
+    TWAIT 0.5
+    SIGNAL 25
+.END
+
+.PROGRAM r1_repai()
+    SPEED 100 ALWAYS
+    SIGNAL -28,-24
+    ABS.SPEED 1: ON
+    JMOVE TP1HOMEIN
+    TWAIT 0.5
+    JMOVE TP1tehai
+    ABS.SPEED 1: OFF
+    TWAIT 0.5
+    JMOVE TP1tehaidown
+    PROMPT"Waiting keyborad input:",inputrp
+    IF inputrp == 100 THEN
+        L3LMOVE SHIFT(TP1tehaidown BY repaioffsetx, 0,0),1
+        TWAIT 0.5
+        ABS.SPEED 1: ON
+        JMOVE TP1tehaidown
+        SIGNAL 24
+    ELSEIF inputrp == 0 THEN
+        SIGNAL 24
+    END
+    SWAIT 24
+    JMOVE TP1tehai
+    ABS.SPEED 1: OFF
+    TWAIT 0.5
+    SIGNAL 28
+.END
+
+.PROGRAM r2_repai()
+    SPEED 100 ALWAYS
+    SIGNAL -29
+    ABS.SPEED 2: ON
+    JMOVE TP2HOME
+    TWAIT 0.5
+    JMOVE TP2tehai
+    ABS.SPEED 2: OFF
+    TWAIT 0.5
+    JMOVE TP2tehaidown
+    SWAIT 24
+    ABS.SPEED 2: ON
+    JMOVE TP2tehai
+    ABS.SPEED 2: OFF
+    TWAIT 0.5
+    SIGNAL 29
+.END
+
+.PROGRAM r1_tumoold()
+    SPEED 100 ALWAYS
+    SIGNAL -40,-42
+    ABS.SPEED 1: ON
+    OPENI 4
+    TWAIT 5
+    CALL handctrl
+    TWAIT 4
+    CALL handctrl
+    TWAIT 4
+    CLOSEI 4
+    ABS.SPEED 1: OFF
+    SIGNAL 42
+    SIGNAL 40
+.END
+
+.PROGRAM r1_tumo()
+    SPEED 100 ALWAYS
+    SIGNAL -40,-42
+    IF tool == 1 THEN
+        IF hand == 1 THEN
+            CALL handctrl
+        END
+        ABS.SPEED 1: ON
+        JMOVE TP1HOME
+        TWAIT 1
+        JMOVE TP1mymount
+        ABS.SPEED 1: OFF
+        TWAIT 1
+        JMOVE TP1mymountdown
+        L3LMOVE SHIFT(TP1mymountdown BY 0,0,0),1
+        TWAIT 0.5
+        OPENI 4
+        TWAIT 1
+        JMOVE TP1mymount
+        CALL handctrl
+        TWAIT 3
+        JMOVE TP1tumo
+        TWAIT 1
+        JMOVE TP1tumodown
+        TWAIT 1
+        CLOSEI 4
+        TWAIT 1
+        JMOVE TP1tumo
+        CALL handctrl
+    END
+    SIGNAL 40,42
+.END
+
+.PROGRAM r2_tumo()
+    SPEED 100 ALWAYS
+    SIGNAL -41
+    TWAIT 1
+    ABS.SPEED 2: ON
+    DRIVE 1,35
+    ABS.SPEED 2: OFF
+    SWAIT 42
+    SIGNAL 41
+
+.END
+
+.PROGRAM r1_tumo2()
+    SPEED 100 ALWAYS
+    SIGNAL -48,-49
+    IF tool == 1 THEN
+        IF hand == 1 THEN
+            CALL handctrl
+        END
+        ABS.SPEED 1: ON
+        JMOVE TP1HOME
+        TWAIT 1
+        OPENI 2
+        TWAIT 1
+        JMOVE TP2mymount
+        ABS.SPEED 1: OFF
+        TWAIT 1
+        JMOVE TP2mymountdown
+        L3LMOVE SHIFT(TP2mymountdown BY 0,0,0),1
+        TWAIT 0.5
+        OPENI 4
+        TWAIT 1
+        JMOVE TP2mymount
+        TWAIT 1
+        CLOSEI 2
+        TWAIT 1
+        CALL handctrl
+        TWAIT 3
+        JMOVE TP1tumo
+        TWAIT 1
+        JMOVE TP1tumodown
+        TWAIT 1
+        CLOSEI 4
+        TWAIT 1
+        JMOVE TP1tumo
+        CALL handctrl
+    END
+    SIGNAL 48,49
+.END
+
+.PROGRAM r2_tumo2()
+    SPEED 100 ALWAYS
+    SIGNAL -48
+    TWAIT 1
+    ABS.SPEED 2: ON
+    DRIVE 1,35
+    ABS.SPEED 2: OFF
+    SWAIT 49
+    SIGNAL 49
+
+.END
+
+.PROGRAM r1_tumo3()
+    SPEED 100 ALWAYS
+    SIGNAL -51,-52
+    IF tool == 1 THEN
+        IF hand == 1 THEN
+            CALL handctrl
+        END
+        ABS.SPEED 1: ON
+        JMOVE TP1HOME
+        TWAIT 1
+        JMOVE TP1mymount
+        ABS.SPEED 1: OFF
+        TWAIT 1
+        JMOVE TP3mymountdown
+        L3LMOVE SHIFT(TP3mymountdown BY 0,0,0),1
+        TWAIT 0.5
+        OPENI 4
+        TWAIT 1
+        JMOVE TP3mymount
+        TWAIT 1
+        CALL handctrl
+        TWAIT 3
+        JMOVE TP1tumo
+        TWAIT 1
+        JMOVE TP1tumodown
+        TWAIT 1
+        CLOSEI 4
+        TWAIT 1
+        JMOVE TP1tumo
+        CALL handctrl
+    END
+    SIGNAL 51,52
+.END
+
+.PROGRAM r2_tumo3()
+    SPEED 100 ALWAYS
+    SIGNAL -51
+    TWAIT 1
+    ABS.SPEED 2: ON
+    DRIVE 1,35
+    ABS.SPEED 2: OFF
+    SWAIT 52
+    SIGNAL 52
+
+.END
+
+.PROGRAM r1_tumo4()
+    SPEED 100 ALWAYS
+    SIGNAL -53,-54
+    IF tool == 1 THEN
+        IF hand == 1 THEN
+            CALL handctrl
+        END
+        ABS.SPEED 1: ON
+        JMOVE TP1HOME
+        TWAIT 1
+        OPENI 2
+        TWAIT 1
+        JMOVE TP4mymount
+        ABS.SPEED 1: OFF
+        TWAIT 1
+        JMOVE TP4mymountdown
+        L3LMOVE SHIFT(TP4mymountdown BY 0,0,0),1
+        TWAIT 0.5
+        OPENI 
+        TWAIT 1
+        JMOVE TP4mymount
+        TWAIT 1
+        CLOSEI 2
+        TWAIT 1
+        CALL handctrl
+        TWAIT 3
+        JMOVE TP1tumo
+        TWAIT 1
+        JMOVE TP1tumodown
+        TWAIT 1
+        CLOSEI 4
+        TWAIT 1
+        JMOVE TP1tumo
+        CALL handctrl
+    END
+    SIGNAL 53,54
+.END
+
+.PROGRAM r2_tumo4()
+    SPEED 100 ALWAYS
+    SIGNAL -53
+    TWAIT 1
+    ABS.SPEED 2: ON
+    DRIVE 1,35
+    ABS.SPEED 2: OFF
+    SWAIT 54
+    SIGNAL 54
+
+.END
+
+.PROGRAM r2_dapai()
+    SPEED 100 ALWAYS
+    SIGNAL -43
+    TWAIT 1
+    ABS.SPEED 2: ON
+    DRIVE 1,35
+    ABS.SPEED 2: OFF
+    SWAIT 45
+    SIGNAL 43
+
+.END
+
+.PROGRAM r1_dapai()
+    SPEED 100 ALWAYS
+    SIGNAL -44,-45
+    TWAIT 1
+    IF tool == 1 THEN
+        IF hand == 0 THEN
+            CALL handctrl
+        END
+        JMOVE TP1HOME
+        TWAIT 1
+        PROMPT"Waiting keyborad input:",inputdp
+        IF inputdp < 13
+            dapaioffsetx = inputdp*20
+            TWAIT 1
+            JMOVE TP1tumo
+            TWAIT 1
+            L3LMOVE SHIFT(TP1tumo BY dapaioffsetx, 0,0),1 
+            TWAIT 1
+            L3LMOVE SHIFT(TP1tumodown BY dapaioffsetx, 0,0),1 
+            TWAIT 1
+            OPENI 4
+            TWAIT 1
+            L3LMOVE SHIFT(TP1tumo BY dapaioffsetx, 0,0),1 
+            TWAIT 1
+            CALL handctrl
+            TWAIT 1
+            JMOVE TP1kawa
+            TWAIT 1
+            JMOVE TP1kawadown
+            TWAIT 1
+            CLOSEI 4
+            TWAIT 1
+            JMOVE TP1kawa
+            TWAIT 1
+            CALL handctrl
+            TWAIT 1
+        END
+    END
+SIGNAL 44,45
+.END
+
+.PROGRAM r1_RON()
+    SPEED 100 ALWAYS
+    ABS.SPEED 1: ON
+    SIGNAL -46
+    IF tool == 1 THEN
+        JMOVE TP1HOME
+    ELSEIF tool == 0 THEN
+        JMOVE TP1HOMEIN
+    END
+    TWAIT 0.5
+    DRIVE 1,-40,100
+    TWAIT 0.5
+    SWAIT 47
+    ABS.SPEED 1: OFF
+    SIGNAL 46
+.END
+
+.PROGRAM r2_RON()
+    SIGNAL -47
+    TWAIT 1
+    JMOVE TP2HOME
+    TWAIT 1
+    JMOVE TP2RON
+    TWAIT 1
+    L3LMOVE SHIFT(TP2RON BY -10, 0,0),1 
+    TWAIT
+    L3LMOVE SHIFT(TP2RON BY 350, 0,0),1 
+    TWAIT 0.5
+    L3LMOVE SHIFT(TP2RON BY 350, 0,50),1 
+    TWAIT 1
+    JMOVE TP2HOME
+    TWAIT 1
+    SIGNAL 47
+.END
+
+.PROGRAM handctrl()
+    IF hand == 0 THEN
+        OPENI 1
+        hand = 1
+        PRINT 0:"hand close"
+        TWAIT 0.5
+    ELSEIF hand == 1 THEN
+        CLOSEI 1
+        hand = 0
+        PRINT 0:"hand open"
+        TWAIT 0.5
+    END
+.END
+
+.JOINTS
+#r1_home -90 90 90 -2.73 0 0
+#r2_home 90 -90 90 0 0 0
+
+#r1_toolup -120 90 100 0 0 0
+#r1_tooldown -120 90 100 180 0 0
+.END
+
+.TRANS
+TP1HOME 200 450 260 0 0 0
+TP1HOMEIN 200 450 260 180 0 0
+TP1toolup 530 200 180 69.3 0 0
+TP1tooldown 530 200 180 249.3 0 0
+TPtaku 220 500 280 180 0 0
+TPtakudown 220 500 180 180 0 0
+
+TP1tumotest 200 500 250 0 0 0
+
+TP2HOME -200 450 250 0 0 0
+TP2REACH 22 480 250 -90 0 0
+TP2DICE -70 520 250 -45 0 0
+TP2DICEdown -70 520 125 -45 0 0
+
+TP1tehai 220 375 250 180 0 0
+TP2tehai -172 360 199 0 0 0
+
+
+TP1tehaidown 220 375 140 180 0 0
+TP2tehaidown -172 360 91 0 0 0
+
+TP2RON -232 345 101 -30 0 0
+
+TP1mymount 173 322 260 0 0 0
+TP1mymountdown 173 322 208 0 0 0
+TP1tumo 192 344 260 0 0 0
+TP1tumodown 192 344 173 0 0 0
+TP1kawa 122 475 250 0 0 0
+TP1kawadown 122 475 160 0 0 0
+.END
